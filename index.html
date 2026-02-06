@@ -5,233 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avenue Media | Premium Music & Video</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        :root {
-            --primary: #FF4D00;
-            --bg-body: #050505;
-            --bg-sidebar: #0a0a0a;
-            --glass: rgba(255, 255, 255, 0.05);
-            --text-main: #ffffff;
-            --text-dim: #a0a0a0;
-            --safe-green: #00ff88;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
-        body { background: var(--bg-body); color: var(--text-main); overflow: hidden; }
-
-        /* --- LAYOUT STRUCTURE --- */
-        .app-shell { display: flex; height: 100vh; width: 100vw; }
-
-        /* --- PREMIUM SIDEBAR --- */
-        nav {
-            width: 280px; background: var(--bg-sidebar);
-            border-right: 1px solid #1a1a1a; padding: 40px 20px;
-            display: flex; flex-direction: column; z-index: 100;
-        }
-
-        .logo { font-size: 26px; font-weight: 800; color: var(--primary); margin-bottom: 50px; letter-spacing: 1px; }
-
-        .nav-link {
-            padding: 14px 20px; color: var(--text-dim); text-decoration: none;
-            display: flex; align-items: center; border-radius: 12px;
-            cursor: pointer; transition: 0.3s; margin-bottom: 8px;
-        }
-
-        .nav-link:hover, .nav-link.active { background: var(--glass); color: var(--primary); }
-        .nav-link i { margin-right: 15px; width: 20px; font-size: 18px; }
-
-        /* --- MAIN CONTENT ENGINE --- */
-        main { flex: 1; padding: 40px; overflow-y: auto; padding-bottom: 120px; position: relative; }
-        section { display: none; max-width: 1100px; margin: 0 auto; }
-        section.active { display: block; animation: fadeIn 0.4s ease; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- MUSIC CARDS & GRID --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 25px; }
-        .card {
-            background: var(--glass); padding: 15px; border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.03); transition: 0.4s; cursor: pointer;
-        }
-        .card:hover { transform: translateY(-8px); background: rgba(255,255,255,0.08); border-color: var(--primary); }
-        .card img { width: 100%; aspect-ratio: 1/1; border-radius: 15px; object-fit: cover; margin-bottom: 15px; }
-        .views-badge { color: #00E5FF; font-size: 12px; font-weight: 600; margin-top: 5px; }
-
-        /* --- SECURE AUTHENTICATION --- */
-        .auth-box { max-width: 450px; margin: 40px auto; background: #0f0f0f; padding: 40px; border-radius: 25px; border: 1px solid #222; }
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 12px; }
-        .strength-meter { height: 4px; width: 100%; background: #222; border-radius: 2px; margin-top: -5px; margin-bottom: 15px; overflow: hidden; }
-        #strength-fill { height: 100%; width: 0%; transition: 0.4s; }
-        
-        .btn-action { background: var(--primary); color: white; border: none; padding: 16px; width: 100%; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn-action:hover { box-shadow: 0 0 20px rgba(255, 77, 0, 0.4); transform: scale(1.02); }
-
-        /* --- PREMIUM PLAYER BAR --- */
-        .player-bar {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 100px;
-            background: rgba(0,0,0,0.95); backdrop-filter: blur(25px);
-            border-top: 1px solid #1a1a1a; display: flex; align-items: center;
-            padding: 0 40px; justify-content: space-between; z-index: 1000;
-        }
-
-        .track-display { display: flex; align-items: center; width: 300px; }
-        .track-display img { width: 60px; height: 60px; border-radius: 10px; margin-right: 15px; border: 1px solid #333; }
-
-        .playback-engine { flex: 1; display: flex; flex-direction: column; align-items: center; }
-        .play-controls { display: flex; align-items: center; gap: 35px; margin-bottom: 10px; }
-        .play-controls i { font-size: 20px; cursor: pointer; transition: 0.2s; }
-        .play-controls i:hover { color: var(--primary); }
-        .main-play { font-size: 45px !important; color: var(--primary); }
-
-        .seek-slider { width: 60%; height: 4px; background: #333; border-radius: 2px; position: relative; }
-        .seek-fill { height: 100%; width: 0%; background: var(--primary); border-radius: 2px; box-shadow: 0 0 10px var(--primary); }
-
-        @media (max-width: 900px) {
-            nav { width: 80px; padding: 30px 10px; }
-            nav .logo, nav span { display: none; }
-            main { margin-left: 0; }
-        }
-    </style>
 </head>
 <body>
 
     <div class="app-shell">
-        <nav>
+        <nav class="sidebar">
             <div class="logo">AVENUE</div>
-            <div class="nav-link active" onclick="navigate('home')"><i class="fa fa-home"></i> <span>Home</span></div>
-            <div class="nav-link" onclick="navigate('hot100')"><i class="fa fa-fire"></i> <span>Hot 100</span></div>
-            <div class="nav-link" onclick="navigate('gossip')"><i class="fa fa-newspaper"></i> <span>Gossip</span></div>
-            <div class="nav-link" onclick="navigate('register')"><i class="fa fa-user-shield"></i> <span>Artist Portal</span></div>
-            <div style="margin-top: auto;" class="nav-link" onclick="navigate('login')"><i class="fa fa-sign-in-alt"></i> <span>Login</span></div>
+            <div class="nav-menu">
+                <div class="nav-item active" onclick="showPage('home')"><i class="fa fa-home"></i> <span>Home</span></div>
+                <div class="nav-item" onclick="showPage('hot100')"><i class="fa fa-fire"></i> <span>Hot 100</span></div>
+                <div class="nav-item" onclick="showPage('gossip')"><i class="fa fa-newspaper"></i> <span>Gossip</span></div>
+                <div class="nav-item" onclick="showPage('register')"><i class="fa fa-user-shield"></i> <span>Register</span></div>
+            </div>
         </nav>
 
-        <main>
-            <section id="home" class="active">
-                <h1 style="margin-bottom: 30px;">Premium Trending</h1>
-                <div class="grid">
-                    <div class="card" onclick="stream('Sitya Loss', 'Eddy Kenzo', 'https://via.placeholder.com/300/111/FF4D00?text=Sitya+Loss')">
-                        <img src="https://via.placeholder.com/300/111/FF4D00?text=Eddy+Kenzo">
+        <main id="content">
+            <section id="home" class="page active">
+                <h1 class="section-title">Trending Now</h1>
+                <div class="music-grid">
+                    <div class="card" onclick="streamTrack('Sitya Loss', 'Eddy Kenzo', 'assets/cover1.jpg')">
+                        <img src="https://via.placeholder.com/200/FF4D00/FFFFFF?text=Album+Art" alt="Song">
+                        <div class="play-btn-float"><i class="fa fa-play"></i></div>
                         <h4>Sitya Loss</h4>
-                        <p style="color:var(--text-dim)">Eddy Kenzo</p>
-                        <div class="views-badge"><i class="fa fa-eye"></i> 1.2M Views</div>
+                        <p>Eddy Kenzo</p>
+                        <span class="views"><i class="fa fa-eye"></i> 1.2M Views</span>
                     </div>
                 </div>
             </section>
 
-            <section id="register">
+            <section id="register" class="page">
                 <div class="auth-box">
-                    <h2>Secure Registration</h2>
-                    <p style="color:var(--text-dim); font-size: 13px; margin-bottom: 20px;">Identity & Address verification required.</p>
-                    <form id="regForm">
-                        <input type="text" placeholder="Full Name" required>
+                    <h2>Artist Registration</h2>
+                    <form id="artistForm">
+                        <input type="text" id="artistName" placeholder="Stage Name" required>
                         <input type="email" placeholder="Email Address" required>
-                        <input type="tel" placeholder="Phone (e.g. +256...)" required>
+                        <input type="tel" placeholder="Phone (+256...)" required>
                         <input type="text" placeholder="Physical Address" required>
-                        <input type="password" id="passInput" placeholder="Secure Password" oninput="checkPass(this.value)" required>
-                        <div class="strength-meter"><div id="strength-fill"></div></div>
-                        <button type="submit" class="btn-action">CREATE PREMIUM ACCOUNT</button>
+                        <div class="pass-wrapper">
+                            <input type="password" id="regPass" placeholder="Secure Password" oninput="validatePass(this.value)">
+                            <div class="strength-meter"><div id="strength-bar"></div></div>
+                        </div>
+                        <button type="submit" class="premium-btn">Create Secure Account</button>
                     </form>
-                </div>
-            </section>
-
-            <section id="hot100">
-                <h1>Official Top 100</h1>
-                <p style="color:var(--text-dim)">The most streamed songs in Uganda right now.</p>
-                </section>
-
-            <section id="gossip">
-                <h1>Celebrity Gossip</h1>
-                <div class="card" style="margin-top:20px; display:flex; gap:20px; align-items:center;">
-                    <img src="https://via.placeholder.com/150" style="width:150px;">
-                    <div>
-                        <h3>Exclusive: Artist World Tour</h3>
-                        <p style="color:var(--text-dim)">Details emerge about the upcoming stadium tour dates...</p>
-                    </div>
                 </div>
             </section>
         </main>
     </div>
 
     <div class="player-bar">
-        <div class="track-display">
-            <img id="now-playing-img" src="https://via.placeholder.com/60/111/333?text=A" alt="Art">
+        <div class="track-info">
+            <img id="p-img" src="https://via.placeholder.com/60/111/FF4D00?text=A">
             <div>
-                <h4 id="now-playing-title">Not Playing</h4>
-                <p id="now-playing-artist" style="font-size: 13px; color: var(--text-dim);">Avenue Media</p>
+                <b id="p-title">Select Track</b>
+                <p id="p-artist">Avenue Media</p>
             </div>
         </div>
-
-        <div class="playback-engine">
-            <div class="play-controls">
-                <i class="fa fa-shuffle"></i>
+        <div class="player-controls">
+            <div class="control-btns">
+                <i class="fa fa-random"></i>
                 <i class="fa fa-step-backward"></i>
-                <i class="fa fa-circle-play main-play" id="playBtn" onclick="togglePlay()"></i>
+                <i class="fa fa-circle-play main-play" id="playBtn" onclick="togglePlayback()"></i>
                 <i class="fa fa-step-forward"></i>
                 <i class="fa fa-repeat"></i>
             </div>
-            <div class="seek-slider">
-                <div class="seek-fill" id="progress"></div>
+            <div class="seek-bar-container">
+                <div class="seek-bar-fill" id="audioProgress"></div>
             </div>
         </div>
-
-        <div style="width: 200px; text-align: right; display: flex; align-items:center; gap:10px;">
+        <div class="volume-box">
             <i class="fa fa-volume-up"></i>
-            <input type="range" style="accent-color: var(--primary); width: 100px;">
+            <input type="range" class="vol-slider">
         </div>
     </div>
 
     <audio id="mainAudio" src=""></audio>
 
-    <script>
-        // --- NAVIGATION ENGINE ---
-        function navigate(id) {
-            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-
-        // --- SECURITY LOGIC ---
-        function checkPass(val) {
-            const fill = document.getElementById('strength-fill');
-            if(val.length < 5) { fill.style.width = "30%"; fill.style.background = "red"; }
-            else if(val.length < 10) { fill.style.width = "60%"; fill.style.background = "orange"; }
-            else { fill.style.width = "100%"; fill.style.background = "var(--safe-green)"; }
-        }
-
-        // --- STREAMING ENGINE ---
-        const audio = document.getElementById('mainAudio');
-        const playBtn = document.getElementById('playBtn');
-
-        function stream(title, artist, img) {
-            document.getElementById('now-playing-title').innerText = title;
-            document.getElementById('now-playing-artist').innerText = artist;
-            document.getElementById('now-playing-img').src = img;
-            
-            // audio.src = 'your-audio-link.mp3';
-            togglePlay(true);
-        }
-
-        function togglePlay(force = false) {
-            if (audio.paused || force) {
-                playBtn.classList.replace('fa-circle-play', 'fa-circle-pause');
-            } else {
-                playBtn.classList.replace('fa-circle-pause', 'fa-circle-play');
-            }
-        }
-
-        // Automatic Progress Bar Simulation
-        setInterval(() => {
-            const bar = document.getElementById('progress');
-            let current = parseFloat(bar.style.width) || 0;
-            if(current < 100 && playBtn.classList.contains('fa-circle-pause')) {
-                bar.style.width = (current + 0.5) + "%";
-            }
-        }, 1000);
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
-
